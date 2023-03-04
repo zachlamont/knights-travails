@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+  border: 1px solid blue;
+}
+
+#chessboard {
+  height: 500px;
+  width: 500px;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.white,
+.black {
+  width: 12.5%;
+  height: 12.5%;
+  font-size: 3em;
+  text-align: center;
+}
+
+.highlight {
+  background-color: greenyellow;
+}
