@@ -1,0 +1,26 @@
+{
+  "name": "knights-travails",
+  "version": "1.0.0",
+  "description": "A script that uses recursion to calculate the shortest path for a knight in chess",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zachlamont/knights-travails.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zachlamont/knights-travails/issues"
+  },
+  "homepage": "https://github.com/zachlamont/knights-travails#readme",
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
