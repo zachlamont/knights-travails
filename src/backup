@@ -1,3 +1,5 @@
+//import knightMoves from './knightMoves.js';
+
 // Get a reference to the chessboard element
 const chessboard = document.getElementById("chessboard");
 
@@ -19,8 +21,6 @@ for (let i = 0; i < 64; i++) {
     const x = i % 8;
     const y = Math.floor(i / 8);
 
-    console.log("you clicked on square" + x + "and" + y);
-
     // If the start square is not yet set, set it and populate the square with a knight symbol
     if (!startSquare) {
       startSquare = [x, y];
@@ -32,16 +32,40 @@ for (let i = 0; i < 64; i++) {
     else {
       targetSquare = [x, y];
 
+      // calculate position of clicked square with respect to the chessboard
+      const rect = square.getBoundingClientRect();
+      const left = rect.left - chessboard.getBoundingClientRect().left;
+      const top = rect.top - chessboard.getBoundingClientRect().top;
+
+      // update position of knight icon to the clicked square using the calculated position
+      knightIcon.style.left = left + "px";
+      knightIcon.style.top = top + "px";
+
       const path = knightMoves(startSquare, targetSquare);
       // Loop through each square on the chessboard and remove any existing highlight
       for (const square of document.querySelectorAll(".highlight")) {
         square.classList.remove("highlight");
       }
       // If a path is found, highlight each square in the path
-      if (path && path.length > 0) {
+      if (path) {
         for (const [x, y] of path) {
-          const squareIndex = y * 8 + x + 1;
+          const squareIndex = y * 8 + x;
           chessboard.children[squareIndex].classList.add("highlight");
+
+          // Animate the knight moving to each square in the path
+          const animate = () => {
+            // If we've reached the end of the path, stop the animation
+            if (currentSquareIndex >= path.length) {
+              clearInterval(animationId);
+              return;
+            }
+            // Move the knight to the current square in the path
+            const [x, y] = path[currentSquareIndex];
+            moveKnightToSquare(chessboard.children[y * 8 + x]);
+
+            // Increment the current square index
+            currentSquareIndex++;
+          };
         }
         animateKnightMoves(path);
       }
@@ -126,6 +150,7 @@ const moveKnightToSquare = (square) => {
   const rect = square.getBoundingClientRect();
   const left = rect.left - chessboard.getBoundingClientRect().left;
   const top = rect.top - chessboard.getBoundingClientRect().top;
+
   // Update the position of the knight icon to the square
   knightIcon.style.left = left + "px";
   knightIcon.style.top = top + "px";
@@ -133,6 +158,9 @@ const moveKnightToSquare = (square) => {
 
 // Define a function to animate the knight moving to each square in the path
 const animateKnightMoves = (path) => {
+  // Move the knight to the start square
+  moveKnightToSquare(chessboard.children[startSquare[1] * 8 + startSquare[0]]);
+
   // Define a variable to keep track of the current square in the path
   let currentSquareIndex = 0;
 
@@ -142,9 +170,7 @@ const animateKnightMoves = (path) => {
     const nextSquare = path[currentSquareIndex];
 
     // Move the knight to the next square
-    moveKnightToSquare(
-      chessboard.children[nextSquare[1] * 8 + nextSquare[0] + 1]
-    );
+    moveKnightToSquare(chessboard.children[nextSquare[1] * 8 + nextSquare[0]]);
 
     // Increment the current square index
     currentSquareIndex++;
@@ -157,21 +183,6 @@ const animateKnightMoves = (path) => {
 
   // Schedule the first move
   moveKnightToNextSquare();
-};
-
-// Animate the knight moving to each square in the path
-const animate = (currentSquareIndex) => {
-  // If we've reached the end of the path, stop the animation
-  if (currentSquareIndex >= path.length) {
-    clearInterval(animationId);
-    return;
-  }
-  // Move the knight to the current square in the path
-  const [x, y] = path[currentSquareIndex];
-  moveKnightToSquare(chessboard.children[y * 8 + x]);
-
-  // Increment the current square index
-  currentSquareIndex++;
 };
 
 // Test the function with some example inputs
