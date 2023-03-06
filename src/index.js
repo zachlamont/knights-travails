@@ -23,6 +23,11 @@ for (let i = 0; i < 64; i++) {
 
     // If the start square is not yet set, set it and populate the square with a knight symbol
     if (!startSquare) {
+      // Loop through each square on the chessboard and remove any existing highlight
+      for (const square of document.querySelectorAll(".highlight")) {
+        square.classList.remove("highlight");
+      }
+
       startSquare = [x, y];
       square.textContent = "";
       knightIcon.style.display = "block";
@@ -33,10 +38,7 @@ for (let i = 0; i < 64; i++) {
       targetSquare = [x, y];
 
       const path = knightMoves(startSquare, targetSquare);
-      // Loop through each square on the chessboard and remove any existing highlight
-      for (const square of document.querySelectorAll(".highlight")) {
-        square.classList.remove("highlight");
-      }
+
       // If a path is found, highlight each square in the path
       if (path && path.length > 0) {
         for (const [x, y] of path) {
